@@ -1,0 +1,20 @@
+{
+    "name": "blogging-system-api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest --coverage"
+    },
+    "author": "Ahmad Albarasy",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.5.3"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.4"
+    }
+}
