@@ -62,4 +62,26 @@ const loginSchema = () => Joi.object({
     })
 });
 
-export  { signUpSchema, loginSchema };
+const updateUserSchema = () => Joi.object({
+  name: Joi.string()
+    .max(50)
+    .optional()
+    .messages({
+      'string.base': 'Name should be a type of string',
+      'string.empty': 'Name cannot be an empty field',
+      'string.max': 'Name should have a maximum length of {#limit}'
+    }),
+  password: Joi.string()
+    .min(8)
+    .max(255)
+    .optional()
+    .messages({
+      'string.base': 'Password should be a type of string',
+      'string.empty': 'Password cannot be an empty field',
+      'string.min': 'Password should have a minimum length of {#limit}',
+      'string.max': 'Password should have a maximum length of {#limit}'
+    }),
+    adminPass : Joi.string().required()
+});
+
+export  { signUpSchema, loginSchema, updateUserSchema };

@@ -1,4 +1,4 @@
-import express,{ NextFunction, Response, Router } from 'express';
+import express,{ Router } from 'express';
 import { signUpController, loginController, logoutController, methodNotSupported } from '../controllers/authController';
 import errorController from '../controllers/errorController';
 import validateBody from '../middlewares/validateJsonBody';
