@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import errorHandler from "../utils/errorHandler";
 import User from "../models/User";
 import APIError from "../utils/APIError";
-import isEmail from "validator/lib/isEmail";
 
 const getAllUsers = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
     const users = await User.findAll({ attributes: ['name', 'email'] });

@@ -45,4 +45,23 @@ const methodNotSupported = (req: Request, res: Response) => {
 	});
 };
 
-export { signUpController, loginController, logoutController, methodNotSupported };
+const loginRequired = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        token = req.headers.authorization.split(' ')[1];
+    }
+    if (!token) {
+        return next(new APIError('You are not authenticated, please sign up or login to do this action.', 403));
+    }
+    const decodedData = jwt.verify(token, process.env.JWT_KEY);
+    if (!decodedData) {
+        return next(new APIError('JWT Invalid or malformed.', 403));
+    }
+    const user = await User.findOne({where: { email: decodedData.email }});
+    if (!user) {
+        return next(new APIError('Something wrong happened, please login again.', 403));
+    }
+    next();
+});
+
+export { signUpController, loginController, logoutController, methodNotSupported, loginRequired };

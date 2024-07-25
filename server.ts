@@ -1,24 +1,20 @@
 import app from './app';
 import sequelize from './db';
-import User from './models/User';
-import Post from './models/Post';
+import { defineAssociations, syncModels } from './models/associateAndSync';
 
 const PORT: number | string = process.env.PORT || 80;
 
-const syncModels = async () => {
-    await User.sync({ alter: true });
-	await Post.sync({ alter: true }); 
-};
 
 const startServer = async () => {
 	try {
-		await sequelize.authenticate();
-		console.log('Connected to database successfully.');
-		// await syncModels(); call this function when needed.
-		// console.log('Schemas has been synchronized successfully.');
 		app.listen(PORT, () => 
 			console.log(`Server is listening on port ${PORT}`
 		));
+		await sequelize.authenticate();
+		console.log('Connected to database successfully.');
+		defineAssociations(); // call this function when needed.
+		await syncModels(); // call this function when needed.
+		console.log('Schemas has been synchronized successfully.');
 	}
 	catch (err: any){
 		console.error(`Something wrong happened...`);
