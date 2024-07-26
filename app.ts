@@ -6,6 +6,7 @@ import errorController from './controllers/errorController';
 import authRouter from './routes/authRouter';
 import userRouter from './routes/userRouter';
 import postRouter from './routes/postRouter';
+import categoryRouter from './routes/categoryRouter';
 
 const app: Express = express();
 
@@ -15,7 +16,8 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', authRouter); // authentication routes.
 app.use('/api/users', userRouter); // user routes.
-app.use('/api/posts', postRouter); // user routes.
+app.use('/api/posts', postRouter); // post routes.
+app.use('/api/categories', categoryRouter); // post routes.
 
 app.route("*").all((req: Request, res: Response) =>
 	res.status(404).json({

@@ -14,7 +14,7 @@ const startServer = async () => {
 		console.log('Connected to database successfully.');
 		defineAssociations(); // call this function when needed.
 		await syncModels(); // call this function when needed.
-		console.log('Schemas has been synchronized successfully.');
+		// console.log('Schemas has been synchronized successfully.');
 	}
 	catch (err: any){
 		console.error(`Something wrong happened...`);

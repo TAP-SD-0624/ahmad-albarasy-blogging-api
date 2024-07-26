@@ -3,7 +3,7 @@ import errorHandler from "../utils/errorHandler";
 import User from "../models/User";
 import APIError from "../utils/APIError";
 
-const getAllUsers = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+const getAllUsers = errorHandler(async (req: Request, res: Response) => {
     const users = await User.findAll({ attributes: ['name', 'email'] });
     res.status(200).json({
         status: 'success',
@@ -45,11 +45,7 @@ const updateUser = errorHandler(async (req: Request, res: Response, next: NextFu
 const deleteUser = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
     const deletedCount = await User.destroy({ where: { email: req.params.email }});
     if (deletedCount === 0) 
-        return res.status(404).json({
-            status: 'fail',
-            message: 'User not found.'
-        });
-
+        return next(new APIError('User not found.', 404));
     res.status(204).json();
 });
 export { getAllUsers, getUser, updateUser, deleteUser };

@@ -84,4 +84,83 @@ const updateUserSchema = () => Joi.object({
     adminPass : Joi.string().required()
 });
 
-export  { signUpSchema, loginSchema, updateUserSchema };
+const createPostSchema = () => Joi.object({
+    postId: Joi.string()
+      .max(30)
+      .required()
+      .messages({
+        'string.base': 'Post ID should be a type of string',
+        'string.max': 'Post ID should have a maximum length of 30',
+        'any.required': 'Post ID is required'
+    }),
+    content: Joi.string()
+      .max(500)
+      .required()
+      .messages({
+        'string.base': 'Content should be a type of string',
+        'string.max': 'Content should have a maximum length of 500',
+        'any.required': 'Content is required'
+    })
+});
+
+const updatePostSchema = () => Joi.object({
+	content: Joi.string()
+	.max(500)
+	.required()
+	.messages({
+		'string.base': 'Content should be a type of text.',
+		'string.empty': 'Content cannot be an empty field.',
+		'string.max': 'Content should have a maximum length of 500 characters.',
+		'any.required': 'Content is a required field.'
+	})
+});
+
+const createCommentSchema = () => Joi.object({
+  content: Joi.string()
+      .max(255)
+      .required()
+      .messages({
+          'string.base': 'Content should be a type of text.',
+          'string.empty': 'Content cannot be an empty field.',
+          'string.max': 'Content should have a maximum length of 255 characters.',
+          'any.required': 'Content is a required field.'
+      })
+});
+
+const createCategorySchema = () => Joi.object({
+    id: Joi.number()
+        .integer()
+        .required()
+        .messages({
+            'number.base': 'ID should be a type of number.',
+            'number.integer': 'ID should be an integer.',
+            'any.required': 'ID is a required field.'
+        }),
+    name: Joi.string()
+        .required()
+        .messages({
+            'string.base': 'Name should be a type of text.',
+            'string.empty': 'Name cannot be an empty field.',
+            'any.required': 'Name is a required field.'
+        })
+});
+
+const addCategoryToPostSchema = () => Joi.object({
+	categoryId: Joi.number()
+		.integer()
+		.required()
+		.messages({
+			'number.base': 'category ID should be a type of number.',
+            'number.integer': 'category ID should be an integer.',
+            'any.required': 'category ID is a required field.'
+		})
+});
+
+export  { signUpSchema, 
+	loginSchema, 
+	updateUserSchema, 
+	createPostSchema,
+	updatePostSchema, 
+	createCommentSchema, 
+	createCategorySchema, 
+	addCategoryToPostSchema };

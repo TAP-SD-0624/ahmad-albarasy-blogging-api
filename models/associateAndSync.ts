@@ -17,7 +17,7 @@ const defineAssociations = () => {
 };
 
 const syncModels = async () => {
-	sequelize.sync({ force: true });
+	await sequelize.sync();
 };
 
 export { defineAssociations, syncModels };

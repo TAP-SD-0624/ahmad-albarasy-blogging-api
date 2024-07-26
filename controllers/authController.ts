@@ -46,6 +46,7 @@ const methodNotSupported = (req: Request, res: Response) => {
 };
 
 const loginRequired = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    console.log('validating user...');
     let token;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
@@ -61,6 +62,8 @@ const loginRequired = errorHandler(async (req: Request, res: Response, next: Nex
     if (!user) {
         return next(new APIError('Something wrong happened, please login again.', 403));
     }
+    // @ts-ignore
+    req.user = decodedData.email;
     next();
 });
 
