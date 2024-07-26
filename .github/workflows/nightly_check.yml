@@ -3,7 +3,7 @@ run-name: daily unit testing for the API
 
 on:
   schedule:
-    - cron: '32 9 * * *'
+    - cron: '35 6 * * *'
 
 jobs:
   app-unit-test:
