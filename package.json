@@ -1,35 +1,41 @@
 {
-    "name": "blogging-system-api",
-    "version": "1.0.0",
-    "main": "index.js",
-    "scripts": {
-        "ts:init": "tsc --init",
-        "test": "jest --coverage",
-        "dev": "nodemon server.ts",
-        "debug": "ndb server.ts"
-    },
-    "author": "Ahmad Albarasy",
-    "license": "ISC",
-    "description": "",
-    "dependencies": {
-        "colorette": "^2.0.20",
-        "dotenv": "^16.4.5",
-        "express": "^4.19.2",
-        "joi": "^17.13.3",
-        "jsonwebtoken": "^9.0.2",
-        "mysql": "^2.18.1",
-        "mysql2": "^3.10.3",
-        "ndb": "^1.1.5",
-        "sequelize": "^6.37.3",
-        "ts-node": "^10.9.2",
-        "typescript": "^5.5.3",
-        "validator": "^13.12.0"
-    },
-    "devDependencies": {
-        "@types/express": "^4.17.21",
-        "@types/morgan": "^1.9.9",
-        "@types/node": "^20.14.11",
-        "morgan": "^1.10.0",
-        "nodemon": "^3.1.4"
-    }
+  "name": "blogging-system-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "ts:init": "tsc --init",
+    "test": "jest --coverage",
+    "dev": "nodemon server.ts",
+    "debug": "ndb server.ts"
+  },
+  "author": "Ahmad Albarasy",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@babel/core": "^7.24.9",
+    "@babel/preset-env": "^7.24.8",
+    "@babel/preset-typescript": "^7.24.7",
+    "babel-jest": "^29.7.0",
+    "colorette": "^2.0.20",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.10.3",
+    "ndb": "^1.1.5",
+    "sequelize": "^6.37.3",
+    "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.14.11",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4"
+  }
 }

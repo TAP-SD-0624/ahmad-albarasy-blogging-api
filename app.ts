@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import express,{ Express, Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import errorController from './controllers/errorController';

@@ -1,12 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import { Sequelize } from 'sequelize';
 import dbLogger from './utils/dbLogger';
 
-const DB_NAME: string = process.env.DB_NAME || "blog_api";
-const DB_USERNAME: string = process.env.DB_USERNAME || 'root';
-const DB_PASSWORD: string = process.env.DB_PASSWORD || 'barasy10000';
+const DB_HOST: string = process.env.DB_HOST || "sql7.freesqldatabase.com";
+const DB_NAME: string = process.env.DB_NAME || "sql7722348";
+const DB_USERNAME: string = process.env.DB_USERNAME || 'sql7722348';
+const DB_PASSWORD: string = process.env.DB_PASSWORD || 'H2jAQlQ6mT';
 
 const sequelize = new Sequelize(DB_NAME, DB_USERNAME, DB_PASSWORD, {
-    host: '127.0.0.1',
+    host: DB_HOST,
     dialect: 'mysql',
     logging: dbLogger
 });
