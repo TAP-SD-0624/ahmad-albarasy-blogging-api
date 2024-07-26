@@ -1,13 +1,9 @@
-name: baseline-check
-run-name: unit testing for the API 
+name: nightly-check
+run-name: daily unit testing for the API
 
 on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - 'main'
+  schedule:
+    -cron: '28 9 * *'
 
 jobs:
   app-unit-test:
