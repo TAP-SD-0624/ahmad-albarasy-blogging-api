@@ -11,7 +11,7 @@ const getPostComments = errorHandler(async (req: Request, res: Response, next: N
     // check if post exists
     const post = await Post.findOne({
         where:{
-            id: postId    
+            id: postId
         }
     });
     if (!post)
@@ -56,5 +56,19 @@ const createComment = errorHandler(async (req: Request, res: Response, next: Nex
 	});
 });
 
-export { getPostComments, createComment };
+const deleteComment = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { commentId } = req.body;
+    const deleted = await Comment.destroy({ 
+        where: {
+            id: commentId
+        }
+    });
+    if (!deleted)
+        return next(new APIError('comment not found.', 404));
+    res.status(204).json();
+});
+
+export { getPostComments,
+        createComment,
+        deleteComment };
 

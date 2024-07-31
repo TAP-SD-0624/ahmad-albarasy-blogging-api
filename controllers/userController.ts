@@ -11,6 +11,15 @@ const getAllUsers = errorHandler(async (req: Request, res: Response) => {
     });
 });
 
+const createUser = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { name, email, password } = req.body;
+    const user = await User.create({ name, email, password });
+    res.status(201).json({
+        status: 'success',
+        user
+    });
+});
+
 const getUser = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findOne({ where: {
         email : req.params.email
@@ -29,13 +38,14 @@ const getUser = errorHandler(async (req: Request, res: Response, next: NextFunct
 });
 
 const updateUser = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    const { email, name } = req.body;
     // check if user exists
     const user = await User.findOne({ where: {
-        email : req.params.email
+        email
     }});
     if (!user)
         return next(new APIError('User not found.', 404));
-    const updatedUser = await User.update({ name: req.body.name, password: req.body.password }, { where: { email: req.params.email } });
+    const updatedUser = await User.update({ name }, { where: { email } });
     res.status(200).json({
         status: 'success',
         recordsAffected: updatedUser
@@ -43,9 +53,10 @@ const updateUser = errorHandler(async (req: Request, res: Response, next: NextFu
 });
 
 const deleteUser = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const deletedCount = await User.destroy({ where: { email: req.params.email }});
+    const { email } = req.body;
+    const deletedCount = await User.destroy({ where: { email }});
     if (deletedCount === 0) 
         return next(new APIError('User not found.', 404));
     res.status(204).json();
 });
-export { getAllUsers, getUser, updateUser, deleteUser };
+export { getAllUsers, createUser, getUser, updateUser, deleteUser };

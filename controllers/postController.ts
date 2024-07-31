@@ -18,7 +18,7 @@ const getAllPosts = errorHandler(async (req: Request, res: Response, next: NextF
     });
     res.status(200).json({
         status: 'success',
-        posts
+        posts: posts || "No posts yet."
     });
 });
 
@@ -62,17 +62,29 @@ const updatePost = errorHandler(async (req: Request, res: Response, next: NextFu
 const deletePost = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
     // @ts-ignore
     const email = req.user;
-    const postId = req.params.postId;
-    if (!postId)
-        return next(new APIError('no postId provided.', 400));
-    const deleted: number = await Post.destroy({
-        where: {
-            [Op.and]: [
-                {userEmail : email},
-                { id: postId }
-            ]
-        }
-    });
+    let deleted: number;
+    if (req.baseUrl.startsWith('/api/admin')){
+        const { postId } = req.body;
+        deleted = await Post.destroy({
+            where: {
+                id: postId
+            }
+        });
+
+    }
+    else {
+        const postId = req.params.postId;
+        if (!postId)
+            return next(new APIError('no postId provided.', 400));
+        deleted = await Post.destroy({
+            where: {
+                [Op.and]: [
+                    {userEmail : email},
+                    { id: postId }
+                ]
+            }
+        });
+    }
     if (!deleted)
         return next(new APIError('Post not found.', 404)); // means that the post is not found or you are not allowed to do this action
     res.status(204).json();
@@ -168,10 +180,45 @@ const addCategoryToPost = errorHandler(async (req: Request, res: Response, next:
      });
 });
 
+const removePostCategory = errorHandler(async (req: Request, res: Response, next: NextFunction) => {
+    // @ts-ignore
+    const email = req.user;
+    const { id } = req.body;
+    const post = await Post.findOne({
+        where: {
+            [Op.and]: [
+                { userEmail : email },
+                { id: req.params.postId }
+            ]
+        }
+    });
+    if (!post)
+        return next(new APIError('Post not found', 404)); // means that the post is not found or you are not allowed to do this action
+    // check if category exists
+    const category = await Category.findOne({ 
+        where: {
+            id
+        }
+     });
+     if (!category)
+        return next(new APIError('No category found with that ID', 404));
+    const deleted: number = await PostCategory.destroy({
+        where: {
+            postId: req.params.postId,
+            categoryId: id
+
+        }
+    });
+    if (! deleted)
+        return next(new APIError('This category is not associated to this post', 404));
+    res.status(204).json();
+});
+
 export { getPost, 
 	createPost, 
 	deletePost,
 	updatePost, 
 	getPostCategories, 
 	addCategoryToPost, 
+    removePostCategory,
 	getAllPosts };

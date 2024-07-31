@@ -1,4 +1,4 @@
-function formatDateToMySQL(date: Date) {
+function formatDateToMySQL(date: Date) { // simple date formatter from javascript date to insert it into MySQL database
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).slice(-2);
     const day = ('0' + date.getDate()).slice(-2);

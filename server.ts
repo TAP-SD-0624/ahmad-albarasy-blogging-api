@@ -12,9 +12,8 @@ const startServer = async () => {
 		));
 		await sequelize.authenticate();
 		console.log('Connected to database successfully.');
-		defineAssociations(); // call this function when needed.
-		await syncModels(); // call this function when needed.
-		// console.log('Schemas has been synchronized successfully.');
+		defineAssociations(); // to ensure associations are defined before getting any requests.
+		await syncModels();
 	}
 	catch (err: any){
 		console.error(`Something wrong happened...`);
@@ -23,4 +22,4 @@ const startServer = async () => {
 	}
 };
 
-startServer();
+startServer(); // the server starts from here.
