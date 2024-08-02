@@ -2,7 +2,7 @@ import app from './app';
 import sequelize from './db';
 import { defineAssociations, syncModels } from './models/associateAndSync';
 
-const PORT: number | string = process.env.PORT || 80;
+const PORT: number | string = process.env.PORT || 4000;
 
 
 const startServer = async () => {
@@ -16,7 +16,7 @@ const startServer = async () => {
 		await syncModels();
 	}
 	catch (err: any){
-		console.error(`Something wrong happened...`);
+		console.error(`Something wrong happened..`);
 		console.error(err.message);
 		process.exit(1); // non-zero exit code means an error has happened.
 	}

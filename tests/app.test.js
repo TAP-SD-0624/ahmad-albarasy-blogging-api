@@ -11,7 +11,7 @@ beforeAll(async () => {
 	await syncModels();
     const res = await request(app)
         .post('/api/auth/login')
-        .send({ email: 'ahmadanas@gmail.com', password: 'test1234' });
+        .send({ email: 'ahmadanas@gmail.com', password: 'test12345' });
         token = res.body.token; // Adjust this according to your response structure
 });
 
@@ -20,7 +20,7 @@ beforeAll(async () => {
 // 1. perform an admin operation without providing the admin password or providing a wrong password
 describe('Get all users using a wrong admin password', () => {
     it('should return a 403 response that indicates that you are not allowed to do this action.', async () => {
-        const res = await request(app).get('/api/users').send({ adminPass: "wrongPass" });
+        const res = await request(app).get('/api/admin/users').send({ adminPass: "wrongPass" });
         expect(res.status).toBe(403);
         expect(res.body.status).toEqual("fail");
     });
@@ -29,7 +29,7 @@ describe('Get all users using a wrong admin password', () => {
 // 2. perform an admin operation with providing the correct admin password
 describe('Get all users using the right admin password', () => {
     it('should return a 200 response with the list of the users registered in the database.', async () => {
-        const res = await request(app).get('/api/users').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
+        const res = await request(app).get('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
         expect(res.status).toBe(200);
         expect(res.body.status).toEqual("success");
     });
@@ -70,7 +70,7 @@ describe('Login using valid credintials', () => {
     it('should return a 200 response with a JWT in the response body.', async () => {
         const res = await request(app).post('/api/auth/login').send({
             email: "ahmadanas@gmail.com",
-            password: "test1234"
+            password: "test12345"
         });
         expect(res.status).toBe(200);
         expect(res.body.status).toEqual("success");
@@ -94,7 +94,7 @@ describe('Login using invalid credintials', () => {
 // 1. Get all users
 describe('Get all users', () => {
     it('should return a 200 response with the list of the users registered in the database.', async () => {
-        const res = await request(app).get('/api/users').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
+        const res = await request(app).get('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
         expect(res.status).toBe(200);
         expect(res.body.status).toEqual("success");
     });
@@ -121,7 +121,7 @@ describe('Get a user that does not exist in the database', () => {
 // 4. Update a user that exists in the database
 describe('Update a user that exists in the database', () => {
     it('should return a 200 response with the number of records affected in the databse (should be one)', async () => {
-        const res = await request(app).put('/api/users/test@gmail.com').send({ adminPass: "X8m$R7v!kW3p@Z2q", name: `Test ${Math.random()}`  }); // to insure random naming thus an update would happen.
+        const res = await request(app).put('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q", email: "ahmadanas@gmail.com",name: `Test ${Math.random()}`  }); // to insure random naming thus an update would happen.
         expect(res.status).toBe(200);
         expect(res.body.status).toBe('success');
         expect(res.body.recordsAffected[0]).toBe(1);
@@ -131,7 +131,7 @@ describe('Update a user that exists in the database', () => {
 // 5. Update a user that doesn't exist in the database
 describe('Update a user that does not exist in the database', () => {
     it('should return a 404 response with a message that says the user is not found', async () => {
-        const res = await request(app).put('/api/users/nouser@gmail.com').send({ adminPass: "X8m$R7v!kW3p@Z2q", name: "anything"  });
+        const res = await request(app).put('/api/admin/users/').send({ adminPass: "X8m$R7v!kW3p@Z2q", email: "nouser@gmail.com", name: "anything"  });
         expect(res.status).toBe(404);
         expect(res.body.status).toBe('fail');
     });
@@ -140,7 +140,7 @@ describe('Update a user that does not exist in the database', () => {
 // 6. Delete a user that exists in the database
 describe('Delete a user that exists in the database', () => {
     it('should return a 204 response with not content for the body', async () => {
-        const res = await request(app).delete('/api/users/test@gmail.com').send({ adminPass: "X8m$R7v!kW3p@Z2q" }); // the user created above
+        const res = await request(app).delete('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q", email: "test@gmail.com" }); // the user created above
         expect(res.status).toBe(204);
     });
 });
@@ -148,7 +148,7 @@ describe('Delete a user that exists in the database', () => {
 // 7. Delete a user that doesn't exist in the database
 describe('Delete a user that does not exist in the database', () => {
     it('should return a 404 response with a message that says the user is not found', async () => {
-        const res = await request(app).delete('/api/users/nouser@gmail.com').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
+        const res = await request(app).delete('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q", email: "nouser@gmail.com" });
         expect(res.status).toBe(404);
         expect(res.body.status).toBe('fail');
     });
@@ -157,7 +157,7 @@ describe('Delete a user that does not exist in the database', () => {
 // 8. Send a request to the user routes using an HTTP method that is not supported
 describe('Send a request to the user routes using PTACH method (not supported)', () => {
     it('should return a 405 response with a message that says the method is not supported for this endpoint', async () => {
-        const res = await request(app).patch('/api/users/nouser@gmail.com').send({ adminPass: "X8m$R7v!kW3p@Z2q" });
+        const res = await request(app).patch('/api/admin/users').send({ adminPass: "X8m$R7v!kW3p@Z2q", email: "nouser@gmail.com" });
         expect(res.status).toBe(405);
         expect(res.body.status).toBe('fail');
     });
@@ -178,7 +178,7 @@ describe('Send a request to get all of the posts with their comments and categor
 // 1. Get an existing post by ID
 describe('Send a request to get a post using the ID of the post', () => {
     it('should return a 200 response with an object that contains that post', async () => {
-        const res = await request(app).get('/api/posts/topic-one').set("Authorization", `Bearer ${token}`);
+        const res = await request(app).get('/api/posts/just-some-thoughts').set("Authorization", `Bearer ${token}`);
         expect(res.status).toBe(200);
         expect(res.body.status).toBe('success');
     });
@@ -213,7 +213,7 @@ describe('Send a request to update a post that does not exist', () => {
 // 5. update a post that isn't owned by you
 describe('Send a request to update a post that is not owned by you (testing user: ahmadanas@gmail.com)', () => {
     it('should return a 404 response', async () => {
-        const res = await request(app).put('/api/posts/topic-one').set("Authorization", `Bearer ${token}`).send({ content: 'Updated by test file!' });
+        const res = await request(app).put('/api/posts/just-some-thoughts').set("Authorization", `Bearer ${token}`).send({ content: 'Updated by test file!' });
         expect(res.status).toBe(404);
         expect(res.body.status).toBe('fail');
     });
@@ -251,7 +251,7 @@ describe('Delete a post that does not belong to the test user (testing user: ahm
 // 8. create a comment on an existing post
 describe('Create a comment on an existing post', () => {
     it('should return a 201 response (resource created)', async () => {
-        const res = await request(app).post('/api/posts/topic-one/comments').set("Authorization", `Bearer ${token}`).send({
+        const res = await request(app).post('/api/posts/just-some-thoughts/comments').set("Authorization", `Bearer ${token}`).send({
 			content: "comment created from a test file!"
 		});
         expect(res.status).toBe(201);

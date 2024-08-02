@@ -5,7 +5,7 @@
   "scripts": {
     "ts:init": "tsc --init",
     "test": "jest --coverage",
-    "dev": "nodemon server.ts",
+    "dev": "nodemon -L server.ts",
     "debug": "ndb server.ts"
   },
   "author": "Ahmad Albarasy",
